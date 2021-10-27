@@ -2,16 +2,20 @@
 using System.Linq;
 using System.Threading.Tasks;
 using TallerAPI.Data.Entities;
+using TallerAPI.Helpers;
+using TallerCommon.Enums;
 
 namespace TallerAPI.Data
 {
     public class SeedDb
     {
         private readonly DataContext _context;
+        private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
+            _userHelper = userHelper;
         }
 
         public async Task SeedAsync ()
@@ -21,6 +25,41 @@ namespace TallerAPI.Data
             await CheckBrandAsync();
             await CheckDocumentTypeAsync();
             await CheckProcedureAsync();
+            await CheckRolesAsycn();
+            await CheckUserAsync("1010", "jonathan", "velasquez", "jonathanalberto123@hotmail.com", "3213914492", "Calle Luna Calle Sol", UserType.Admin);
+            await CheckUserAsync("2020", "Juan", "Zuluaga", "zulu@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.User);
+            await CheckUserAsync("3030", "Ledys", "Bedoya", "ledys@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.User);
+            await CheckUserAsync("4040", "Sandra", "Lopera", "sandra@yopmail.com", "311 322 4620", "Calle Luna Calle Sol", UserType.Admin);
+        }
+
+        private async Task CheckRolesAsycn()
+        {
+            await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
+            await _userHelper.CheckRoleAsync(UserType.User.ToString());
+        }
+
+        private async Task CheckUserAsync(string document, string firstName, string lastName, string email, string phoneNumber, string address, UserType userType)
+        {
+            User user = await _userHelper.GetUserAsync(email);
+            if (user == null)
+            {
+                user = new User
+                {
+                    Address = address,
+                    Document = document,
+                    DocumentType = _context.documentType.FirstOrDefault(x => x.Description == "Cedula"),
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    PhoneNumber = phoneNumber,
+                    UserName = email,
+                    UserType = userType
+                };
+
+                await _userHelper.AddUserAsync(user, "123456");
+                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+
+              }
         }
 
         private async Task CheckProcedureAsync()
