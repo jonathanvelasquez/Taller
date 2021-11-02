@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TallerAPI.Data;
 using TallerAPI.Data.Entities;
 
 namespace TallerAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class VehicleTypesController : Controller
     {
         private readonly DataContext _context;
@@ -25,14 +25,14 @@ namespace TallerAPI.Controllers
             return View(await _context.vehicleTypes.ToListAsync());
         }
 
-       
+
         // GET: VehicleTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-       [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleType vehicleType)
         {
@@ -79,7 +79,7 @@ namespace TallerAPI.Controllers
             return View(vehicleType);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, VehicleType vehicleType)
@@ -111,7 +111,7 @@ namespace TallerAPI.Controllers
                 catch (Exception exception)
                 {
                     ModelState.AddModelError(string.Empty, exception.Message);
-                } 
+                }
 
             }
             return View(vehicleType);
@@ -135,7 +135,7 @@ namespace TallerAPI.Controllers
             _context.vehicleTypes.Remove(vehicleType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }       
+        }
 
         private bool VehicleTypeExists(int id)
         {

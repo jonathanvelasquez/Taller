@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using TallerAPI.Data;
 using TallerAPI.Data.Entities;
+using TallerAPI.Models;
 
 namespace TallerAPI.Helpers
 {
@@ -12,15 +13,18 @@ namespace TallerAPI.Helpers
         private readonly UserManager<User> _userManeger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DataContext _context;
+        private readonly SignInManager<User> _signInManager;
 
         public UserHelper(
             UserManager<User> userManeger, 
             RoleManager<IdentityRole> roleManager,
-            DataContext context)
+            DataContext context,
+            SignInManager<User> signInManager)
         {
             _userManeger = userManeger;
             _roleManager = roleManager;
             _context = context;
+            _signInManager = signInManager;
         }
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
@@ -51,6 +55,16 @@ namespace TallerAPI.Helpers
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await _userManeger.IsInRoleAsync(user, roleName);
+        }
+
+        public async Task<SignInResult> LoginAsync(LoginViewModel model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

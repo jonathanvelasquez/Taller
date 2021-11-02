@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using TallerAPI.Data.Entities;
+using TallerAPI.Models;
 
 namespace TallerAPI.Helpers
 {
@@ -15,6 +16,10 @@ namespace TallerAPI.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
 
     }
 }
