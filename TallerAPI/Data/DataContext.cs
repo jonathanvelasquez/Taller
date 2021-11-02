@@ -13,6 +13,10 @@ namespace TallerAPI.Data
         public DbSet<VehicleType> vehicleTypes { get; set; }
         public DbSet<DocumentType> documentType { get; set; }
         public DbSet<Brand> brand { get; set; }
+        public DbSet<Vehicle> vehicles { get; set; }
+        public DbSet<Detail> details { get; set; }
+        public DbSet<History> histories { get; set; }
+        public DbSet<VehiclePhoto> vehiclePhotos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +25,7 @@ namespace TallerAPI.Data
             modelBuilder.Entity<Procedure>().HasIndex(x => x.Description).IsUnique();
             modelBuilder.Entity<DocumentType>().HasIndex(x => x.Description).IsUnique();
             modelBuilder.Entity<Brand>().HasIndex(x => x.Description).IsUnique();
+            modelBuilder.Entity<Vehicle>().HasIndex(x => x.Plaque).IsUnique();
         }
     }
 }

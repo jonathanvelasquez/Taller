@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TallerCommon.Enums;
 
@@ -44,6 +45,10 @@ namespace TallerAPI.Data.Entities
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
+
+        public ICollection<Vehicle> vehicles { get; set; }
+
+        public ICollection<History> histories { get; set; }
 
     }
 }
