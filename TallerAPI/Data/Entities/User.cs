@@ -33,12 +33,11 @@ namespace TallerAPI.Data.Entities
 
         [Display(Name = "Foto")]
         public Guid ImageId { get; set; }
-
-        //TODO: Fix the image
+        
         [Display(Name = "Foto")]
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://localhost:44338/images/NotImage.png"
-            : $"https://vehiclessalazar.blob.core.windows.net/users/{ImageId}";
+            : $"https://taller.blob.core.windows.net/users/{ImageId}";
 
         [Display(Name = "Tipo de usuario")]
         public UserType UserType { get; set; }
@@ -50,5 +49,7 @@ namespace TallerAPI.Data.Entities
 
         public ICollection<History> histories { get; set; }
 
+        [Display(Name = "# Vehículos")]
+        public int VehiclesCount => vehicles == null ? 0 : vehicles.Count;
     }
 }

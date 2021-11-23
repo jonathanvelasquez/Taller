@@ -13,10 +13,10 @@ namespace TallerAPI.Data.Entities
         [Display(Name = "Foto")]
         public Guid ImageId { get; set; }
 
-        //TODO: Fix Foto
+       
         [Display(Name = "Foto")]
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://localhost:44338/images/NotImage.png"
-            : $"https://vehiclessalazar.blob.core.windows.net/vehicles/{ImageId}";
+            : $"https://taller.blob.core.windows.net/vehicles/{ImageId}";
     }
 }
