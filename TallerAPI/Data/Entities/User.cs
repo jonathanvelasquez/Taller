@@ -47,8 +47,6 @@ namespace TallerAPI.Data.Entities
 
         public ICollection<Vehicle> vehicles { get; set; }
 
-        public ICollection<History> histories { get; set; }
-
         [Display(Name = "# Vehículos")]
         public int VehiclesCount => vehicles == null ? 0 : vehicles.Count;
     }

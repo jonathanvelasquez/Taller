@@ -142,5 +142,31 @@ namespace TallerAPI.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            User user = await _context.Users
+                .Include(x => x.DocumentType)
+                .Include(x => x.vehicles)
+                .ThenInclude(x => x.Brand)
+                .Include(x => x.vehicles)
+                .ThenInclude(x => x.VehicleType)
+                .Include(x => x.vehicles)
+                .ThenInclude(x => x.VehiclePhotos)
+                .Include(x => x.vehicles)
+                .ThenInclude(x => x.Histories)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
     }
 }
